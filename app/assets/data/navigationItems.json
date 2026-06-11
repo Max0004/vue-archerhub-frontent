@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Turniere",
+    "subMenu": [
+      { "name": "Historien", "link": "/tournaments/histories" },
+      { "name": "Rundentracker", "link": "/tournaments/round-tracker" },
+      { "name": "Ergebnisarchiv", "link": "/tournaments/archive" }
+    ]
+  },
+  {
+    "title": "Community",
+    "subMenu": [
+      { "name": "Schützen", "link": "/community/archers" },
+      { "name": "Vereine", "link": "/community/clubs" }
+    ]
+  }
+]

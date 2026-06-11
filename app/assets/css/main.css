@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@layer components {
+  body {
+    @apply bg-gray-50 text-gray-900;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .container {
+    max-width: 1800px;
+  }
+
+  .fixed {
+    z-index: 50;
+  }
+
+  .expand-btn {
+    @apply px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer;
+  }
+
+  .download-btn {
+    @apply px-4 py-2 mb-3 bg-blue-600 hover:bg-blue-700 text-white rounded cursor-pointer;
+  }
+}
