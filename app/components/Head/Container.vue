@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-gray-900 text-white shadow-md">
+  <header class="header-bar">
     <div class="container mx-auto px-4">
       <div class="flex items-center justify-between md:justify-center py-4">
         <!-- Logo -->
@@ -19,7 +19,7 @@
             @mouseenter="showDropdown(item)"
             @mouseleave="hideDropdownWithDelay(item)"
           >
-            <button class="hover:text-gray-300 font-semibold">
+            <button class="hover:text-gray-300 font-semibold cursor-pointer">
               {{ item.title }}
             </button>
 
