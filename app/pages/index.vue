@@ -2,8 +2,8 @@
   <div class="container mx-auto py-10 space-y-12">
     <!-- By Point Average -->
     <section>
-      <div ref="pointsRef" class="bg-white p-2 rounded-xl">
-        <h2 class="text-2xl font-semibold mb-4">🏅 Schützen nach höchstem Ringdurchschnitt (Seison {{ currentYear }})</h2>
+      <div class="bg-white p-2 rounded-xl">
+        <h2 class="text-2xl font-semibold mb-4">🏅 Schützen nach höchstem Ringdurchschnitt (Saison {{ currentYear }})</h2>
         <div v-if="!topTenByPoints.length" class="bg-white shadow rounded-xl p-6">
           <p>Es gibt momentan noch keine Ergebnisse für dieses Jahr</p>
         </div>
@@ -60,7 +60,7 @@
 
     <!-- By Improvement -->
     <section>
-      <div ref="improvementsRef" class="bg-white p-2 rounded-xl">
+      <div class="bg-white p-2 rounded-xl">
         <h2 class="text-2xl font-semibold mb-4">📈 Schützen nach Verbesserung zum Vorjahr ({{ currentYear - 1 }} - {{ currentYear }})</h2>
         <div v-if="!topTenByYearImprovement.length" class="bg-white shadow rounded-xl p-6">
           <p>Es gibt momentan noch keine Ergebnisse für dieses Jahr</p>
@@ -106,7 +106,7 @@
 
     <!-- Medals -->
     <section>
-      <div ref="medalsRef" class="bg-white p-2 rounded-xl">
+      <div class="bg-white p-2 rounded-xl">
         <h2 class="text-2xl font-semibold mb-4">
     🥇    Medaillenspiegel (Saison {{ currentYear }})
         </h2>
