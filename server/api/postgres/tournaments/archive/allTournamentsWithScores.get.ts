@@ -1,4 +1,4 @@
-import connectToDatabase from "../../postgres/connect"
+import connectToDatabase from "../../connect"
 
 export default defineEventHandler(async () => {
   const query = `

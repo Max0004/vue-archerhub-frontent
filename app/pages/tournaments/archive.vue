@@ -197,7 +197,7 @@
 
   async function fetchTournamentData() {
     loading.value = true
-    tournaments.value = await $fetch('/api/tournaments/archive/allTournamentsWithScores', {method: "GET"})
+    tournaments.value = await $fetch('/api/postgres/tournaments/archive/allTournamentsWithScores', {method: "GET"})
     loading.value = false
   }
 
