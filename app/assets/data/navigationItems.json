@@ -1,8 +1,9 @@
 [
   {
-    "title": "Turniere",
-    "subMenu": [
-      { "name": "Ergebnisarchiv", "link": "/tournaments/archive" }
+    "label": "Turniere",
+    "icon": "i-lucide-trophy",
+    "children": [
+      { "label": "Ergebnisarchiv", "to": "/tournaments/archive" }
     ]
   }
 ]
