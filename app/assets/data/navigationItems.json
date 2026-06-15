@@ -10,5 +10,10 @@
     "label": "Schützen",
     "icon": "i-lucide-users",
     "to": "/community/archers"
+  },
+  {
+    "label": "Vereine",
+    "icon": "i-lucide-building-2",
+    "to": "/community/clubs"
   }
 ]
