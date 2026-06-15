@@ -2,6 +2,7 @@
   {
     "label": "Turniere",
     "icon": "i-lucide-trophy",
+    "to": "/tournaments",
     "children": [
       {
         "label": "Historien",
