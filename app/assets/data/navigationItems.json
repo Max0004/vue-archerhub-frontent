@@ -8,6 +8,11 @@
         "icon": "i-lucide-history",
         "to": "/tournaments/history"
       },
+      {
+        "label": "Rundentracker",
+        "icon": "i-lucide-list-ordered",
+        "to": "/tournaments/round-tracker"
+      },
       { 
         "label": "Ergebnisarchiv", 
         "icon": "i-lucide-archive",
