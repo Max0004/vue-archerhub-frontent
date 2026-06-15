@@ -3,7 +3,16 @@
     "label": "Turniere",
     "icon": "i-lucide-trophy",
     "children": [
-      { "label": "Ergebnisarchiv", "to": "/tournaments/archive" }
+      {
+        "label": "Historien",
+        "icon": "i-lucide-history",
+        "to": "/tournaments/history"
+      },
+      { 
+        "label": "Ergebnisarchiv", 
+        "icon": "i-lucide-archive",
+        "to": "/tournaments/archive" 
+      }
     ]
   },
   {
