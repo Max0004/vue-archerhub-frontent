@@ -12,12 +12,14 @@
         <div class="flex flex-wrap gap-4 mb-4">
           <!-- Year Filter -->
           <div class="relative">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Jahr</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Saison</label>
             <button
             @click="isYearOpen = !isYearOpen"
             class="dropdown-menu"
             >
-              <span class="text-gray-700">{{ selectedYear }}</span>
+              <span class="text-gray-700">
+                {{ selectedSeason === 'Alle Saisons' ? 'Alle Saisons' : `Saison ${Number(selectedSeason)+1}` }}
+              </span>
               <ChevronDown :class="['w-4 h-4 text-gray-500 transition-transform', isYearOpen ? 'rotate-180' : '']"/>
             </button>
   
@@ -26,12 +28,12 @@
             class="absolute z-10 mt-1 w-48 bg-white border border-gray-300 rounded shadow-lg"
             >
               <button
-              v-for="year in years"
-              :key="year"
-              @click="selectYear(year)"
+              v-for="season in seasons"
+              :key="season"
+              @click="selectYear(season)"
               class="dropdown-menu-selection"
               >
-                {{ year }}
+                {{ season === "Alle Saisons" ? season : Number(season) + 1 }}
               </button>
             </div>
           </div>
@@ -114,21 +116,21 @@
 
   const loading = ref(false)
 
-  const selectedYear = ref('Alle Jahre')
+  const selectedSeason = ref('Alle Saisons')
   const selectedOrganizer = ref('Alle Veranstalter')
   const isYearOpen = ref(false)
   const isOrganizerOpen = ref(false)
 
   const tournaments = ref([])
 
-  const years = computed(() => {
-    const uniqueYears = [
+  const seasons = computed(() => {
+    const uniqueSeasons = [
       ...new Set(
-        tournaments.value.map(t => new Date(t.startdate).getFullYear().toString())
+        tournaments.value.map(t => getSeasonYear(t.startdate))
       )
     ]
 
-    return ['Alle Jahre', ...uniqueYears.sort((a, b) => Number(b) - Number(a))]
+    return [...uniqueSeasons.sort((a,b) => Number(b) - Number(a))]
   })
 
   const organizers = computed(() => {
@@ -140,17 +142,16 @@
       )
     ]
 
-    return ['Alle Veranstalter', ...uniqueOrganizers.sort()]
+    return [...uniqueOrganizers.sort()]
   })
 
   const filteredTournaments = computed(() => {
     return tournaments.value.filter(t => {
-      const tournamentYear =
-        new Date(t.startdate).getFullYear().toString()
+      const tournamentSeason = getSeasonYear(t.startdate)
 
       return (
-        (selectedYear.value === 'Alle Jahre' ||
-          tournamentYear === selectedYear.value) &&
+        (selectedSeason.value === 'Alle Saisons' ||
+          tournamentSeason === selectedSeason.value) &&
         (selectedOrganizer.value === 'Alle Veranstalter' ||
           t.organizer_name === selectedOrganizer.value)
       )
@@ -159,13 +160,21 @@
   
   const activeFilters = computed(() => {
     const filters = []
-    if (selectedYear.value !== 'Alle Jahre') filters.push(selectedYear.value)
+    if (selectedSeason.value !== 'Alle Saisons') filters.push(`Saison ${Number(selectedSeason.value) + 1}`)
     if (selectedOrganizer.value !== 'Alle Veranstalter') filters.push(selectedOrganizer.value)
     return filters
   })
+
+  function getSeasonYear(dateString: string) {
+    const date = new Date(dateString)
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+
+    return month >= 10 ? year.toString() : (year - 1).toString()
+  }
   
   function selectYear(year) {
-    selectedYear.value = year
+    selectedSeason.value = year
     isYearOpen.value = false
   }
   
@@ -175,8 +184,8 @@
   }
   
   function removeFilter(filter) {
-    if (years.value.includes(filter)) {
-      selectedYear.value = 'Alle Jahre'
+    if (filter.includes('Saison')) {
+      selectedSeason.value = 'Alle Saisons'
     } else {
       selectedOrganizer.value = 'Alle Veranstalter'
     }
