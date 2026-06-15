@@ -1,3 +1,14 @@
+export function convertGender(genderString: string) {
+  switch(genderString) {
+    case "Male":
+      return "Männlich"
+    case "Female":
+      return "Weiblich"
+    default:
+      return "Divers"
+  }
+}
+
 export function sortParticipants(participants) {
   return [...participants].sort((a, b) => {
     if(a.rank !== null && b.rank === null) return -1;
