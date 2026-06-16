@@ -142,7 +142,7 @@
   }
 
   async function fetchClubs() {
-    const response = await $fetch('/api/postgres/clubs', {
+    const response = await $fetch('/api/postgres/club', {
       method: 'GET'
     })
     clubs.value = response.map((club: any) => ({
