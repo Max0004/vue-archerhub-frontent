@@ -1,0 +1,62 @@
+[
+  {
+    "key": "totalCenters",
+    "label": "X",
+    "color": "#FFFF00"
+  },
+  {
+    "key": "totalTens",
+    "label": "10",
+    "color": "#FFFF00"
+  },
+  {
+    "key": "totalNines",
+    "label": "9",
+    "color": "#FFFF00"
+  },
+  {
+    "key": "totalEights",
+    "label": "8",
+    "color": "#FF0000"
+  },
+  {
+    "key": "totalSevens",
+    "label": "7",
+    "color": "#FF0000"
+  },
+  {
+    "key": "totalSixes",
+    "label": "6",
+    "color": "#00A8E0"
+  },
+  {
+    "key": "totalFives",
+    "label": "5",
+    "color": "#00A8E0"
+  },
+  {
+    "key": "totalFours",
+    "label": "4",
+    "color": "#000000"
+  },
+  {
+    "key": "totalThrees",
+    "label": "3",
+    "color": "#000000"
+  },
+  {
+    "key": "totalTwos",
+    "label": "2",
+    "color": "#DDDDDD"
+  },
+  {
+    "key": "totalOnes",
+    "label": "1",
+    "color": "#DDDDDD"
+  },
+  {
+    "key": "missed",
+    "label": "M",
+    "color": "#888888"
+  }
+]

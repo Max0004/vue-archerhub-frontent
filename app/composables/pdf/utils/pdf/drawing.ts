@@ -57,6 +57,8 @@ export async function addFullPageChart(
   const { img, width, height } =
     await captureElementAsImage(element);
 
+    console.log("Element Captured as Image")
+
   pdf.addPage("a4", "landscape");
 
   const pageWidth = pdf.internal.pageSize.getWidth();
@@ -66,6 +68,8 @@ export async function addFullPageChart(
   const imgHeight = (height * imgWidth) / width;
 
   const imgY = (pageHeight - imgHeight) / 2;
+
+  console.log("Sacles Set")
 
   pdf.setFontSize(18);
 

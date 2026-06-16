@@ -63,6 +63,14 @@
           color="bronze"
           />
         </div>
+
+        <NuxtLink
+        v-if="userData?.active"
+        :to="`${archerId}/training-log`"
+        class="w-full bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg p-4 border border-indigo-200 mt-6 block text-center font-semibold text-gray-900"
+        >
+          Trainingslog
+        </NuxtLink>
       </div>
     </div>
   </div>

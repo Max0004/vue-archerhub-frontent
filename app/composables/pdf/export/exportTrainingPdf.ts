@@ -29,10 +29,14 @@ export async function useExportTrainingPdf(options: {userData: any; chartEl: HTM
   pdf.setFontSize(14);
   pdf.text(`Erstellt am: ${dateString}`, pageWidth / 2, 70, { align: "center" });
 
+  console.log("Cover Created")
+
   // -------------------------  
   // PAGE 2 — CHART SNAPSHOT  
   // -------------------------
   if (chartEl) await addFullPageChart(pdf, chartEl, "Trainingsverlauf");
+
+  console.log("Chart Created")
 
   // -------------------------  
   // PAGE 3+ — TRAINING SESSIONS  
