@@ -25,7 +25,9 @@ export default defineEventHandler(async (event) => {
         body.goldCounted
       ]);
   
-    return res;
+    if(!res.error) return {...res, statusCode: 200};
+
+    return res
   } catch(error) {
     console.error('Error creating tournament:', error);
     throw new Error('Failed to create tournament');

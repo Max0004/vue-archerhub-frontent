@@ -13,8 +13,10 @@
     <!-- Form -->
     <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
       <UForm
+      :schema="tournamentSchema"
+      :state="tournament"
       class="space-y-8"
-      @submit.prevent="createTournament"
+      @submit="createTournament"
       >
         <!-- General -->
         <div>
@@ -23,19 +25,19 @@
           </h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <UFormField label="Turniername" required>
+            <UFormField label="Turniername" name="name" required>
               <UInput v-model="tournament.name" class="w-full rounded-lg border border-slate-300" />
             </UFormField>
 
-            <UFormField label="Veranstalter" required>
+            <UFormField label="Veranstalter" name="organizedBy" required>
               <USelect v-model="tournament.organizedBy" :items="clubs" class="w-full border border-slate-300" />
             </UFormField>
 
-            <UFormField label="Turniergruppe" required>
+            <UFormField label="Turniergruppe" name="tournamentGroup" required>
               <USelect v-model="tournament.tournamentGroup" :items="tournamentGroups" class="w-full border border-slate-300" />
             </UFormField>
 
-            <UFormField label="Austragungsort" required>
+            <UFormField label="Austragungsort" name="place" required>
               <UInput v-model="tournament.place" class="w-full rounded-lg border border-slate-300" />
             </UFormField>
           </div>
@@ -48,11 +50,11 @@
           </h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <UFormField label="Begin" required>
+            <UFormField label="Begin" name="from" required>
               <UInputDate v-model="tournament.from" :default-value="defaultStartDate" />
             </UFormField>
 
-            <UFormField label="Ende">
+            <UFormField label="Ende" name="until">
               <UInputDate v-model="tournament.until" />
             </UFormField>
           </div>
@@ -65,13 +67,13 @@
           </h2>
 
           <div class="space-y-3">
-            <UFormField label="X Auflisten">
+            <UFormField label="X Auflisten" name="centersCounted">
               <UCheckbox v-model="tournament.centersCounted" />
             </UFormField>
-            <UFormField label="Neuner Auflisten">
+            <UFormField label="Neuner Auflisten" name="ninesCounted">
               <UCheckbox v-model="tournament.ninesCounted" />
             </UFormField>
-            <UFormField label="Gold-Treffer (X, 10, 9) Auflisten">
+            <UFormField label="Gold-Treffer (X, 10, 9) Auflisten" name="goldCounted">
               <UCheckbox v-model="tournament.goldCounted" />
             </UFormField>
           </div>
@@ -84,10 +86,10 @@
           </h2>
 
           <div class="space-y-4">
-            <UFormField label="Titel für Gewinner">
+            <UFormField label="Titel für Gewinner" name="titleByWinning">
               <UInput v-model="tournament.titleByWinning" class="w-full rounded-lg border border-slate-300" placeholder="z.B. Landesmeister" />
             </UFormField>
-            <UFormField label="Medaille auch bei Abwesenheit vergeben">
+            <UFormField label="Medaille auch bei Abwesenheit vergeben" name="earnMedalInAbsence">
               <UCheckbox v-model="tournament.earnMedalInAbsence" />
             </UFormField>
           </div>
@@ -108,11 +110,14 @@
 </template>
 <script setup lang="ts">
   import { CalendarDate } from '@internationalized/date'
-  const tournament = ref({
+import type { FormSubmitEvent } from '@nuxt/ui'
+import { format } from 'date-fns'
+import { tournamentSchema } from '~/composables/validation/tournament'
+  const tournament = ref<tournamentSchema>({
     name: '',
-    organizedBy: null,
+    organizedBy: 999,
     from: '',
-    until: '',
+    until: undefined,
     tournamentGroup: 0,
     place: '',
     centersCounted: false,
@@ -122,6 +127,8 @@
     goldCounted: true
   })
 
+  const toast = useToast()
+
   const clubs = ref([])
 
   const tournamentGroups = ref([])
@@ -130,17 +137,27 @@
 
   const defaultStartDate = shallowRef(new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()))
 
-  async function createTournament() {
-    await $fetch('/api/postgres/tournaments', {
+  async function createTournament(event: FormSubmitEvent<tournamentSchema>) {
+    const data = event.data
+
+    const response = await $fetch('/api/postgres/tournaments', {
       method: 'POST',
       body: {
-        ...tournament.value,
-        from: new Date(tournament.value.from),
-        until: tournament.value.until
-          ? new Date(tournament.value.until)
+        ...data,
+        from: format(new Date(data.from),"yyyy-MM-dd"),
+        until: data.until
+          ? format(new Date(data.until),"yyyy-MM-dd")
           : null
       }
     })
+
+    if(!response.statusCode) {
+      toast.add({
+        title: "Turnier konnte nicht erstellt werden."
+      })
+    }
+
+    await navigateTo('/tournaments')
   }
 
   async function fetchClubs() {
