@@ -32,7 +32,7 @@
             </UFormField>
 
             <UFormField label="Turniergruppe" required>
-              <UInputNumber v-model="tournament.tournamentGroup" :min="0" class="w-full border border-slate-300 " />
+              <USelect v-model="tournament.tournamentGroup" :items="tournamentGroups" class="w-full border border-slate-300" />
             </UFormField>
 
             <UFormField label="Austragungsort" required>
@@ -124,6 +124,8 @@
 
   const clubs = ref([])
 
+  const tournamentGroups = ref([])
+
   const currentDate = new Date()
 
   const defaultStartDate = shallowRef(new CalendarDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate()))
@@ -151,7 +153,16 @@
     }))
   }
 
+  async function fetchTournamentGroups() {
+    const response = await $fetch('/api/postgres/tournaments/groups', { method: "GET" })
+    tournamentGroups.value = response.map((group: any) => ({
+      label: group.description,
+      value: group.id
+    }))
+  }
+
   onMounted(() => {
     fetchClubs()
+    fetchTournamentGroups()
   })
 </script>
