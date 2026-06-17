@@ -1,10 +1,9 @@
 import jsPDF from "jspdf";
 import ringSettings from "~/assets/data/RingSettings.json";
 import { addFullPageChart } from "../utils/pdf/drawing";
-import { captureElementAsImage } from "../utils/pdf/image";
 
-export async function useExportTrainingPdf(options: {userData: any; chartEl: HTMLElement | null; sessions: any[]}) {
-  const { userData, chartEl, sessions } = options;
+export async function useExportTrainingPdf(options: {userData: any; chart: any | null; sessions: any[]}) {
+  const { userData, chart: chart, sessions } = options;
 
   const pdf = new jsPDF({
     orientation: "p",
@@ -29,14 +28,10 @@ export async function useExportTrainingPdf(options: {userData: any; chartEl: HTM
   pdf.setFontSize(14);
   pdf.text(`Erstellt am: ${dateString}`, pageWidth / 2, 70, { align: "center" });
 
-  console.log("Cover Created")
-
   // -------------------------  
   // PAGE 2 — CHART SNAPSHOT  
   // -------------------------
-  if (chartEl) await addFullPageChart(pdf, chartEl, "Trainingsverlauf");
-
-  console.log("Chart Created")
+  if (chart) await addFullPageChart(pdf, chart, "Trainingsverlauf");
 
   // -------------------------  
   // PAGE 3+ — TRAINING SESSIONS  
@@ -83,13 +78,13 @@ export async function useExportTrainingPdf(options: {userData: any; chartEl: HTM
 
       // ----- DONUT CHART -----
 
-      const chartEl = document.querySelector(
+      const doughnut = document.querySelector(
         `[data-chart-id="${session.trainingstart}-${record.targetTitle}"]`
-      ) as HTMLElement | null;
+      ) as any | null;
 
-      if (chartEl) {
-        const { img } = await captureElementAsImage(chartEl);
-        pdf.addImage(img, "PNG", 120, 30, 70, 70);
+      if (doughnut && doughnut.querySelector('canvas')) {
+        const img = doughnut.querySelector('canvas').toDataURL('image/png')
+        pdf.addImage(img, "PNG", 180, 10, 70, 70);
       }
       
       // ----- TABLE: Hits per Ring -----

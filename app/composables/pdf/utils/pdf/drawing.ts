@@ -1,5 +1,3 @@
-import { captureElementAsImage } from "./image";
-
 export function drawWrappedHeader(
   pdf: any,
   startX: number,
@@ -51,13 +49,12 @@ export function drawWrappedHeader(
 
 export async function addFullPageChart(
   pdf: any,
-  element: HTMLElement,
+  chart: any,
   title = "Diagramm"
 ) {
-  const { img, width, height } =
-    await captureElementAsImage(element);
-
-    console.log("Element Captured as Image")
+  const img = chart.toBase64Image()
+  const height = chart.height
+  const width = chart.width
 
   pdf.addPage("a4", "landscape");
 
@@ -68,8 +65,6 @@ export async function addFullPageChart(
   const imgHeight = (height * imgWidth) / width;
 
   const imgY = (pageHeight - imgHeight) / 2;
-
-  console.log("Sacles Set")
 
   pdf.setFontSize(18);
 

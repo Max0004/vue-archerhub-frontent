@@ -6,7 +6,7 @@ import { calculateColumnWidths } from "../utils/pdf/layout";
 import { drawManualTable } from "../utils/renderers/tableRenderer";
 
 export async function useExportTournamentHistoryPdf(options: {
-  chartElement: HTMLElement; 
+  chartElement: any; 
   selectedArchers: string[]; 
   tournaments: { name: string; date: string }[]; 
   datasetMap: Record<string, (number | null)[]>}) {
@@ -44,7 +44,20 @@ export async function useExportTournamentHistoryPdf(options: {
   });
 
   // === PAGE 2: CHART (LANDSCAPE, FULL PAGE) ===
-  await addFullPageChart(pdf, chartElement, "Entwicklung");
+  pdf.addPage("a4", "landscape")
+
+  const img = chartElement.toDataURL('image/png')
+
+  const landscapePageWidth = pdf.internal.pageSize.getWidth();
+  const landscapePageHeight = pdf.internal.pageSize.getHeight();
+
+  const imgWidth = landscapePageWidth
+  const imgHeight = (chartElement.height * imgWidth) / chartElement.width
+
+  const imgY = (landscapePageHeight - imgHeight) / 2
+
+  pdf.addImage(img, "PNG", 0, imgY, imgWidth, imgHeight)  
+  // await addFullPageChart(pdf, chartElement, "Entwicklung");
 
   // === PAGE 2: DATAPOINT TABLE ===
   pdf.addPage("a4", "p");
