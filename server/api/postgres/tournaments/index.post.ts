@@ -5,8 +5,6 @@ export default defineEventHandler(async (event) => {
 
     const body = await readBody(event);
 
-    console.log("Received tournament data:", body);
-
     const client = await connectToDatabase();
     const res = await client.query(`
       INSERT INTO 
