@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+  <div class="min-h-screen bg-linear-to-br from-slate-50 to-slate-100">
     <div class="max-w-7xl mx-auto p-6">
       <div class="bg-white rounded-xl shadow-lg p-6">
 
@@ -7,10 +7,10 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
           <div>
             <h1 class="text-2xl font-bold text-slate-800">
-              Tournaments
+              Turniere
             </h1>
             <p class="text-slate-600">
-              {{ tournaments.length }} tournament{{ tournaments.length !== 1 ? 's' : '' }}
+              {{ tournaments.length }} Turnier{{ tournaments.length !== 1 ? 'e' : '' }}
             </p>
           </div>
 
@@ -18,7 +18,7 @@
             to="/tournaments/form"
             class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
-            Create Tournament
+            Turnier erstellen
           </NuxtLink>
         </div>
 
@@ -33,20 +33,21 @@
               {{ t.name }}
             </h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-slate-600">
+            <div class="grid grid-cols-1 gap-2 text-sm text-slate-600">
               <div class="flex items-center gap-2">
                 <Award size="16" />
-                <span>Organizer: {{ t.organizer }}</span>
+                <span>Organisiert durch: {{ t.organizer }}</span>
               </div>
 
               <div class="flex items-center gap-2">
                 <Calendar size="16" />
-                <span>From: {{ formatDate(t.from) }}</span>
+                <span v-if="t.until">Von: {{ formatDate(t.from) }}</span>
+                <span v-else>{{ formatDate(t.from) }}</span>
               </div>
 
-              <div class="flex items-center gap-2">
+              <div v-if="t.until" class="flex items-center gap-2">
                 <Calendar size="16" />
-                <span>Until: {{ formatDate(t.until) }}</span>
+                <span>Bis: {{ formatDate(t.until) }}</span>
               </div>
 
               <div class="flex items-center gap-2">
