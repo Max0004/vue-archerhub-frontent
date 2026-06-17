@@ -73,7 +73,7 @@
             v-for="record in session.training_records" 
             :key="record.targetTitle"
             :data-chart-id="session.trainingstart + '-' + record.targetTitle">
-              <TrainingDoughnutChart :target-data="record" />
+              <TrainingDoughnutChart ref="chartRefs" :target-data="record" />
             </div>
           </div>
         </div>
@@ -200,13 +200,10 @@
     }
   })
 
-  const chartOptions = { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:true, position:'top'}}, scales:{y:{beginAtZero:false}} }
+  const chartOptions = { responsive:true, plugins:{legend:{display:true, position:'top'}}, scales:{y:{beginAtZero:true, max: 10},x:{ticks: {maxTicksLimit: 20}}} }
 
   async function exportPdf() {
-    console.log("User Data: ",archerData.value)
-    console.log("Sessions: ",filteredSessions.value)
-    console.log("Chart El: ",historyChart.value?.$el)
-    await useExportTrainingPdf({userData: archerData.value, sessions: filteredSessions.value, chartEl: historyChart.value?.$el})
+    await useExportTrainingPdf({userData: archerData.value, sessions: filteredSessions.value, chart: historyChart.value?.chart})
   }
 
   onMounted(() => {

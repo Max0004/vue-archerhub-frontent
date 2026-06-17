@@ -194,6 +194,7 @@
       scales: {
         y: {
           beginAtZero: true,
+          max: props.type === "avghits" ? 10 : undefined,
           title: {
             display: true,
             text: yAxisTitle,
