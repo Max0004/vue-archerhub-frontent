@@ -6,25 +6,6 @@ export interface CapturedImage {
   height: number;
 }
 
-// export async function captureElementAsImage(
-//   el: HTMLElement
-// ): Promise<CapturedImage> {
-//   console.log("Generating Canvas")
-//   const canvas = await html2canvas(el, {
-//     scale: 2,
-//     useCORS: true,
-//     backgroundColor: "#ffffff"
-//   });
-
-//   console.log("Canvas Generated")
-
-//   return {
-//     img: canvas.toDataURL("image/png", 1.0),
-//     width: canvas.width,
-//     height: canvas.height
-//   };
-// }
-
 export async function captureElementAsImage(el: HTMLElement) {
   const originalStyle = el.style.color;
 
