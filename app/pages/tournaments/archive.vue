@@ -48,7 +48,7 @@
               <span class="text-gray-700 truncate">{{ selectedOrganizer }}</span>
               <ChevronDown
               :class="[
-                'w-4 h-4 text-gray-500 transition-transform flex-shrink-0 ml-2',
+                'w-4 h-4 text-gray-500 transition-transform shrink-0 ml-2',
                 isOrganizerOpen ? 'rotate-180' : ''
               ]"
               />
