@@ -1,6 +1,5 @@
 import jsPDF from "jspdf";
 import { getOptionHeader } from "../utils/formatting/headers";
-import { addFullPageChart } from "../utils/pdf/drawing";
 import { formatCellValue } from "../utils/formatting/numbers";
 import { calculateColumnWidths } from "../utils/pdf/layout";
 import { drawManualTable } from "../utils/renderers/tableRenderer";
