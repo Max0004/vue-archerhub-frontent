@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 sm:p-8">
+  <div class="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 p-4 sm:p-8">
     <!-- Header -->
     <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
       <div class="flex items-center gap-3 mb-2">
