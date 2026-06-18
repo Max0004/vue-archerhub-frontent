@@ -221,8 +221,6 @@
       return
     }
 
-    console.log(chartComponent.value?.chartRoot?.querySelector('canvas'))
-
     useExportTournamentHistoryPdf({
       chartElement: chartComponent.value?.chartRoot?.querySelector('canvas'),
       selectedArchers: selectedArcherIds.value,
