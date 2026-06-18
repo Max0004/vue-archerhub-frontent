@@ -4,7 +4,7 @@
       No data selected for this selection
     </div>
 
-    <div class="h-[800px]">
+    <div class="h-200">
       <Line v-if="chartData" :data="chartData" :options="roundTrackerChartOptions" />
     </div>
   </div>
