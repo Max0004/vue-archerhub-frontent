@@ -11,7 +11,7 @@
               v-for="t in tournaments"
               :key="t.tournament_id"
               @click="selectedTournament = t.tournament_id; selectedTournamentName = t.tournament_name; selectedAgeBracket = null"
-              class="w-full text-left p-4 rounded-lg border-2 transition-colors"
+              class="w-full text-left p-4 rounded-lg border-2 transition-colors cursor-pointer"
               :class="selectedTournament === t.tournament_id ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:border-gray-300'"
             >
               <div class="font-semibold text-gray-900">{{ t.tournament_name }}</div>
@@ -33,7 +33,7 @@
               v-for="ab in availableAgeBrackets"
               :key="ab.id"
               @click="selectedAgeBracket = ab.id"
-              class="w-full text-left p-4 rounded-lg border-2 transition-colors"
+              class="w-full text-left p-4 rounded-lg border-2 transition-colors cursor-pointer"
               :class="selectedAgeBracket === ab.id ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:border-gray-300'"
             >
               <div class="font-semibold text-gray-900">{{ ab.name }}</div>
@@ -72,18 +72,16 @@
         Download Pdf
       </UButton>
 
-      <div ref="chartWrapper">
+      <div ref="roundTrackerChart">
         <TournamentRoundTrackerChart
-        ref="roundTrackerChart"
         :selectedParticipants="selectedParticipants"
         :allParticipantsInTournament="allParticipantsInTournament"
         />
       </div>
 
-      <div ref="tableWrapper">
+      <div>
         <TournamentRoundTrackerTable
-        :selectedParticipants="selectedParticipants"
-        :allParticipantsInTournament="allParticipantsInTournament"
+        :tableData="tableData"
         />
       </div>
     </div>
@@ -92,10 +90,11 @@
 <script setup>
   import { ref, computed } from 'vue'
 import { useExportRoundTrackerPdf } from '~/composables/pdf/export/exportRoundTrackerPdf';
+import { buildRoundTrackerRows } from '~/composables/roundTracker/buildRoundTrackerRows';
 
   const tournaments = ref([])
-  const chartWrapper = ref(null)
-  const tableWrapper = ref(null)
+
+  const roundTrackerChart = ref(null)
 
   const selectedTournament = ref(null)
   const selectedTournamentName = ref(null);
@@ -104,10 +103,12 @@ import { useExportRoundTrackerPdf } from '~/composables/pdf/export/exportRoundTr
   const selectedParticipants = ref([])
   const selectedParticipantsNames = ref([])
 
+  const tableData = ref({maxRound: 0, rows: []})
+
   async function exportPdf() {
     await useExportRoundTrackerPdf({
-      chartEl: chartWrapper.value,
-      tableEl: tableWrapper.value,
+      chartEl: roundTrackerChart.value.querySelector('canvas'),
+      tableData: tableData.value,
       selectedArchers: selectedParticipantsNames.value,
       tournament: selectedTournamentName.value
     })
@@ -197,5 +198,9 @@ import { useExportRoundTrackerPdf } from '~/composables/pdf/export/exportRoundTr
 
   onMounted(() => {
     fetchTournaments()
+  })
+
+  watch([allParticipantsInTournament,selectedParticipants],() => {
+    tableData.value = buildRoundTrackerRows(allParticipantsInTournament.value,selectedParticipants.value)
   })
 </script>

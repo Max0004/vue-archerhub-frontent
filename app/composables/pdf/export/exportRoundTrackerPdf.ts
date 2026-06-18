@@ -1,13 +1,14 @@
 import jsPDF from "jspdf";
 import { addFullPageChart } from "../utils/pdf/drawing";
+import autoTable from "jspdf-autotable";
 
 export async function useExportRoundTrackerPdf(options: {
-  chartEl: HTMLElement | null;
-  tableEl: HTMLElement | null;
+  chartEl: any;
+  tableData: Object,
   selectedArchers: Array<Object>;
   tournament: String
 }) {
-  const { chartEl, tableEl, selectedArchers, tournament } = options;
+  const { chartEl, tableData, selectedArchers, tournament } = options;
 
   const pdf = new jsPDF("p", "mm", "a4");
   const today = new Date().toLocaleDateString("de-DE");
@@ -48,12 +49,62 @@ export async function useExportRoundTrackerPdf(options: {
 
   // === PAGE 2: Chart ===
   if (chartEl) {
-    await addFullPageChart(pdf, chartEl, "Rundentracker")
+    pdf.addPage("a4", "landscape")
+    
+    const img = chartEl.toDataURL('image/png')
+    
+    const landscapePageWidth = pdf.internal.pageSize.getWidth();
+    const landscapePageHeight = pdf.internal.pageSize.getHeight();
+
+    const imgWidth = landscapePageWidth
+    const imgHeight = (chartEl.height * imgWidth) / chartEl.width
+
+    const imgY = (landscapePageHeight - imgHeight) / 2
+
+    pdf.addImage(img, "PNG", 0, imgY, imgWidth, imgHeight)  
   }
 
   // === PAGE 3: Table ===
-  if (tableEl) {
-    await addFullPageChart(pdf, tableEl, "")
+  if (tableData && tableData.rows?.length) {
+    pdf.addPage("a4", "p")
+
+    const head = [
+      [
+        "Schütze",
+        ...Array.from(
+          { length: tableData.maxRound },
+          (_, i) => `Runde ${i + 1}`
+        ),
+        "Gesamt"
+      ]
+    ]
+
+    const body = tableData.rows?.map(row => [
+      row.name,
+      ...row.rounds.map(r => {
+        if(r.score === "-") {
+          return "-"
+        }
+
+        return r.diff === null
+          ? `${r.score}`
+          : `${r.score}\n${r.diff.toFixed(1)}%`
+      }),
+      row.total
+    ])
+
+    autoTable(pdf, {
+      head,
+      body,
+      startY: 20,
+      styles: {
+        fontSize: 8,
+        cellPadding: 2
+      },
+      headStyles: {
+        fontStyle: "bold"
+      }
+    })
   }
 
   // === Save ===
