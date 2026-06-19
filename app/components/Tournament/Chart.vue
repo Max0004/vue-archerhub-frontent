@@ -1,6 +1,7 @@
 <template>
   <div class="mr-12" ref="chartRoot">
-    <Line v-if="allArchers && selectedArcherIds" :data="chartData" :options="chartOptions" />
+    <Line v-if="allArchers && selectedArcherIds && type==='avghits'" :data="chartData" :options="chartOptions" :plugins="[ringBackgroundPlugin]" />
+    <Line v-else-if="allArchers && selectedArcherIds" :data="chartData" :options="chartOptions" />
     <Line v-else :data="individualData" :options="chartOptions" />
   </div>
 </template>
@@ -15,8 +16,9 @@
     LineElement,
     Title,
     Tooltip,
-    Legend,
+    Legend
   } from 'chart.js'
+import { ringBackgroundPlugin } from '~/composables/rankingStyling'
   
   ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -189,7 +191,7 @@
               return `${datasetLabel}: ${value}`;
             }
           }
-        },
+        }
       },
       scales: {
         y: {
