@@ -2,6 +2,7 @@
   <div class="container mx-auto p-6">
     <h1 class="primary-header text-center mb-4">Schützen Community</h1>
     <div class="mb-6 ">
+      <UButton class="w-full mb-4" icon="i-lucide-plus" color="primary" @click="router.push('/form/archer')">Neuer Schütze</UButton>
       <input v-model="searchQuery" type="text" class="p-2 border w-full border-gray-300 rounded" placeholder="Sucher nach Name..." />
     </div>
 

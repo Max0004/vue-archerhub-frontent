@@ -11,3 +11,11 @@ export function formatDateWithTime(date: string) {
 export function formatDateWithoutTime(date: string) {
   return format(new Date(date), 'dd.MM.yyyy');
 }
+
+export function formatBirthday(birthday) {
+  if(birthday) {
+    return format(new Date(birthday),'yyyy-MM-dd')
+  }
+
+  return null
+}
