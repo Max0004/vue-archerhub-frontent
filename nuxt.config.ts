@@ -35,5 +35,15 @@ export default defineNuxtConfig({
       table: import.meta.env.NUXT_POSTGRES_TABLE,
       port: Number(import.meta.env.NUXT_POSTGRES_PORT),
     }
+  },
+
+  app: {
+    head: {
+      title: 'Archerhub - Universal Archery Management Tool',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+      ]
+    }
   }
 })
