@@ -14,20 +14,44 @@
             </p>
           </div>
 
-          <div class="flex flex-col md:justify-between mb-6 gap-2">
-            <NuxtLink
-            to="/form/tournament"
-            class="primary-btn inline-flex items-center justify-center transition"
+          <div class="relative">
+            <button
+            class="primary-btn inline-flex items-center gap-2"
+            @click="showAddMenu = !showAddMenu"
             >
-              Turnier erstellen
-            </NuxtLink>
+              <Plus size="16" />
+              Neu hinzufügen
+              <ChevronDown size="16" />
+            </button>
 
-            <NuxtLink
-            to="/form/tournament/participation"
-            class="primary-btn inline-flex items-center justify-center transition mr-5"
+            <div
+            v-if="showAddMenu"
+            class="absolute right-0 mt-2 w-64 bg-blue-600 text-white rounded-lg shadow-lg z-10"
             >
-              Turnierergebnisse hinzufügen
-            </NuxtLink>
+              <NuxtLink
+              to="/form/tournament"
+              class="block px-4 py-3 hover:bg-blue-700 border"
+              @click="showAddMenu = false"
+              >
+                Turnier erstellen
+              </NuxtLink>
+
+              <NuxtLink
+              to="/form/tournament/participation"
+              class="block px-4 py-3 hover:bg-blue-700 border"
+              @click="showAddMenu = false"
+              >
+                Turnierergebnisse hinzufügen
+              </NuxtLink>
+
+              <NuxtLink
+              to="/form/tournament/teams"
+              class="block px-4 py-3 hover:bg-blue-700 border"
+              @click="showAddMenu = false"
+              >
+                Teamergebnisse hinzufügen
+              </NuxtLink>
+            </div>
           </div>
         </div>
 
@@ -75,8 +99,12 @@
   import {  
     Calendar, 
     Award, 
-    MapPin 
+    MapPin ,
+    Plus ,
+    ChevronDown
   } from 'lucide-vue-next'
+
+  const showAddMenu = ref(false)
 
   const tournaments = ref([])
 

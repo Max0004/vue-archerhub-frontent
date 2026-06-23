@@ -1,0 +1,62 @@
+[
+  {
+    "parent": 1,
+    "parentName": "Schüler C",
+    "children": [ 1, 2, 3 ]
+  },
+  {
+    "parent": 4,
+    "parentName": "Schüler B",
+    "children": [ 4, 5, 6 ]
+  },
+  {
+    "parent": 7,
+    "parentName": "Schüler A",
+    "children": [ 7, 8, 9 ]
+  },
+  {
+    "parent": 10,
+    "parentName": "Jugend",
+    "children": [ 10, 11, 12 ]
+  },
+  {
+    "parent": 13,
+    "parentName": "Junior",
+    "children": [ 13, 14, 15 ]
+  },
+  {
+    "parent": 16,
+    "parentName": "Erwachsen",
+    "children": [ 16, 17, 18 ]
+  },
+  {
+    "parent": 19,
+    "parentName": "Master",
+    "children": [ 19, 20, 21 ]
+  },
+  {
+    "parent": 22,
+    "parentName": "Senioren",
+    "children": [ 22, 23 ]
+  },
+  {
+    "parent": 27,
+    "parentName": "Schüler",
+    "children": [ 2, 3, 5, 6, 8, 9, 27 ]
+  },
+  {
+    "parent": 30,
+    "parentName": "Herren (Cross-Age)",
+    "children": [ 14, 17, 20, 22 ]
+  },
+  {
+    "parent": 31,
+    "parentName": "Damen (Cross-Age)",
+    "children": [ 15, 18, 21, 23 ]
+  },
+  {
+    "parent": 32,
+    "parentName": "Erwachsen (Cross-Age)",
+    "children": [ 14, 15, 17, 18, 20, 21, 22, 23 ]
+  }
+]
