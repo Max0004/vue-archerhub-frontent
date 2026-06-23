@@ -295,8 +295,6 @@ async function fetchParticipants() {
 
   const ageBracketIds = connectedAgeBrackets.find(bracket => bracket.parent === selectedAgeBracket.value)?.children ?? [Number(selectedAgeBracket.value)]
 
-  console.log("Age Brackets: ",ageBracketIds);
-
   try {
     participants.value = await $fetch(`/api/postgres/archer/filteredParticipants`,{
       method: 'GET',
