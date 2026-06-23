@@ -14,12 +14,21 @@
             </p>
           </div>
 
-          <NuxtLink
+          <div class="flex flex-col md:justify-between mb-6 gap-2">
+            <NuxtLink
             to="/form/tournament"
-            class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            Turnier erstellen
-          </NuxtLink>
+            class="primary-btn inline-flex items-center justify-center transition"
+            >
+              Turnier erstellen
+            </NuxtLink>
+
+            <NuxtLink
+            to="/form/tournament/participation"
+            class="primary-btn inline-flex items-center justify-center transition mr-5"
+            >
+              Turnierergebnisse hinzufügen
+            </NuxtLink>
+          </div>
         </div>
 
         <!-- Tournament list -->

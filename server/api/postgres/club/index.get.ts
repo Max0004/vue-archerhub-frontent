@@ -4,10 +4,12 @@ import connectToDatabase from '../connect';
 export default defineEventHandler(async (event) => {
   const client = await connectToDatabase();
 
+  const includeGuest = getQuery(event)?.includeGuest || false
+
   const query = `
     SELECT *
     FROM club
-    WHERE id != 997
+    ${includeGuest ? '' : 'WHERE id != 997'}
     ORDER BY name;
   `;
   try {
