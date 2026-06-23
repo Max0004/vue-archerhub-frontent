@@ -51,7 +51,7 @@
       </div>
       <button
       v-if="topTenByPoints.length > 0"
-      class="download-btn"
+      class="primary-btn"
       @click="downloadLeaderboard(topTenByPoints, `Schützen nach höchstem Ringdurchschnitt (Saison ${currentYear})`, 1)"
       >
         Download Tabelle
@@ -97,7 +97,7 @@
       </div>
       <button
       v-if="topTenByYearImprovement.length > 0"
-      class="download-btn"
+      class="primary-btn"
       @click="downloadLeaderboard(topTenByYearImprovement, `Schützen nach Verbesserung zum Vorjahr (${currentYear - 1} - ${currentYear})`, 2)"
       >
         Download Tabelle
@@ -141,7 +141,7 @@
       </div>
       <button
       v-if="topTenMedalists.length > 0"
-      class="download-btn"
+      class="primary-btn"
       @click="downloadLeaderboard(topTenMedalists, `Medallienspiegel (${currentYear})`, 3)"
       >
         Download Tabelle
