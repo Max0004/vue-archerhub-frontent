@@ -140,7 +140,7 @@
   }
 
   async function fetchParticipants() {
-    participants.value = await $fetch('/api/postgres/archer', { method: 'GET' })
+    participants.value = await $fetch('/api/postgres/archer/includingInactive', { method: 'GET' })
   }
 
   async function fetchAgeBrackets() {
