@@ -9,13 +9,32 @@
       <p class="text-gray-500">Keine Trainingsdaten vorhanden.</p>
     </div>
     <div v-else>
-      <div class="w-full">
-        <UButton
-        v-if="filteredSessions.length > 0"
-        icon="i-heroicons-arrow-down-tray-20-solid"
-        color="primary"
-        @click="exportPdf"
-        />
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-lg font-semibold">Trainingseinheiten</h2>
+          <p class="text-sm text-gray-500">
+            {{ filteredSessions.length }} Einträge
+          </p>
+        </div>
+
+        <div class="flex gap-3">
+          <UButton
+          v-if="filteredSessions.length > 0"
+          icon="i-heroicons-arrow-down-tray-20-solid"
+          color="neutral"
+          variant="soft"
+          @click="exportPdf"
+          >
+          PDF exportieren
+          </UButton>
+          <UButton
+          icon="i-heroicons-plus"
+          color="primary"
+          @click="showModal = true"
+          >
+            Neuen Eintrag erstellen
+          </UButton>
+        </div>
       </div>
       <div>
         <div class="my-5 flex flex-wrap gap-4 items-end">
@@ -41,12 +60,28 @@
             />
           </div>
 
+          <div class="w-48">
+            <label class="text-sm font-medium block mb-1">
+              Auflage und Entfernung
+            </label>
+
+            <select
+            v-model="selectedTargetType"
+            class="border rounded px-3 py-2 w-full">
+              <option value="all">Alle Zieltypen</option>
+              <option v-for="type in targetTypes" :key="type" :value="type.value">
+                {{ type.text }}
+              </option>
+            </select>
+          </div>
+
           <UButton
           color="neutral"
           variant="soft"
           @click="() => {
             startDate = null
             endDate = null
+            selectedTargetType = 'all'
           }"
           >
             Filter zurücksetzen
@@ -78,6 +113,7 @@
           </div>
         </div>
       </div>
+      <TrainingModal v-if="showModal" :show="showModal" @save="submitTrainingData" @close="showModal = false" />
     </div>
 </template>
 <script setup lang="ts">
@@ -103,12 +139,17 @@
   const archerData = ref({})
   const trainingData = ref([])
 
-  // const filteredSessions = ref([])
-
   const historyChart = ref<HTMLElement | null>(null)
 
   const startDate = ref<string | null>(null)
   const endDate = ref<string | null>(null)
+  
+  const selectedTargetType = ref("all");
+  const targetTypes = ref<string[]>([]);
+
+  const showModal = ref(false)
+
+  const toast = useToast()
 
   async function fetchData() {
     loading.value = true
@@ -124,6 +165,24 @@
       )
 
       trainingData.value = sortedSessions
+
+      const typeMap = new Map<string, { value: string; text: string }>()
+
+      trainingData.value.forEach(session => {
+        session.training_records.forEach(record => {
+          if(record.target && record.distance) {
+            const key = `${record.target}|${record.distance}`
+            if(!typeMap.has(key)) {
+              typeMap.set(key, {
+                value: record.target,
+                text: `${record.target} (${record.distance}m)`
+              })
+            }
+          }
+        })
+      })
+
+      targetTypes.value = Array.from(typeMap.values())
 
       if(sortedSessions.length) {
         startDate.value = sortedSessions[0].trainingstart.split('T')[0]
@@ -151,7 +210,7 @@
 
       if(endDate.value) {
         const end = new Date(endDate.value)
-        end.setHours(0, 0, 0, 0)
+        end.setHours(23, 59, 59, 999)
 
         if(sessionDate > end) return false
       }
@@ -206,7 +265,87 @@
     await useExportTrainingPdf({userData: archerData.value, sessions: filteredSessions.value, chart: historyChart.value?.chart})
   }
 
+  async function submitTrainingData(newTrainingData: any) {
+    try {
+      const payload = {
+        description: newTrainingData.description,
+        location: newTrainingData.location,
+        trainingStart: newTrainingData.trainingStart,
+        trainingEnd: newTrainingData.trainingEnd,
+
+        records: newTrainingData.scores.map((group: any) => {
+          const distribution = {
+            X: 0,
+            '10': 0,
+            '9': 0,
+            '8': 0,
+            '7': 0,
+            '6': 0,
+            '5': 0,
+            '4': 0,
+            '3': 0,
+            '2': 0,
+            '1': 0,
+            M: 0
+          }
+
+          group.rounds.forEach((round: any) => {
+            round.arrows.forEach((arrow: any) => {
+              if(arrow.value) {
+                distribution[arrow.value]++
+              }
+            })
+          })
+
+          return {
+            targetId: group.target,
+            distance: group.distance,
+
+            totalCenters: distribution.X,
+            totalTens: distribution['10'],
+            totalNines: distribution['9'],
+            totalEights: distribution['8'],
+            totalSevens: distribution['7'],
+            totalSixs: distribution['6'],
+            totalFives: distribution['5'],
+            totalFours: distribution['4'],
+            totalThrees: distribution['3'],
+            totalTwos: distribution['2'],
+            totalOnes: distribution['1'],
+            missed: distribution.M
+          }
+        })
+      }
+
+      const response = await $fetch('/api/postgres/training', { method: 'POST', body: {archerId,payload} })
+
+      if(response.statusCode == 200) {
+
+        fetchData()
+        showModal.value = false
+      }
+    } catch(error) {
+      console.error('An Error occured while submitting Training Data: ',error)
+      toast.add({
+        title: 'Fehler',
+        description: 'Beim Speichern der Trainingsdaten ist ein Fehler aufgetreten',
+        color: 'error'
+      })
+    }
+  }
+
   onMounted(() => {
     fetchData()
+  })
+
+  watch(selectedTargetType, () => {
+    filteredSessions.value = trainingData.value.map(session => {
+      const filteredTargets = 
+        selectedTargetType.value === "all"
+          ? session.training_records
+          : session.training_records.filter(
+            r => r.target === selectedTargetType.value
+          )
+    })
   })
 </script>

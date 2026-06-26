@@ -19,3 +19,16 @@ export function formatBirthday(birthday) {
 
   return null
 }
+
+export function formatDateTime(date: any, time: any) {
+  return format(
+    new Date(
+      date.year,
+      date.month - 1,
+      date.day,
+      time.hour,
+      time.minute,
+    ),
+    'yyyy-MM-dd HH:mm:ss',
+  )
+}
