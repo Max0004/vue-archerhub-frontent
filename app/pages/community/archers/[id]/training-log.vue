@@ -94,6 +94,7 @@
           <Line
           :data="pointDistributionHistory"
           :options="chartOptions"
+          :plugins="[ringBackgroundPlugin]"
           ref="historyChart"
           />
         </div>
