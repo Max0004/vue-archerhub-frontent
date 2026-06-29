@@ -174,7 +174,7 @@
             const key = `${record.target}|${record.distance}`
             if(!typeMap.has(key)) {
               typeMap.set(key, {
-                value: record.target,
+                value: key,
                 text: `${record.target} (${record.distance}m)`
               })
             }
@@ -196,27 +196,43 @@
   }
 
   const filteredSessions = computed(() => {
-    if(!trainingData.value?.length) return []
+    if (!trainingData.value?.length) return []
 
-    return trainingData.value.filter((session) => {
-      const sessionDate = new Date(session.trainingstart)
+    return trainingData.value
+      .map(session => {
+        // filter records inside the session
+        const training_records =
+          selectedTargetType.value === "all"
+            ? session.training_records
+            : session.training_records.filter(record =>
+              `${record.target}|${record.distance}` === selectedTargetType.value
+            )
 
-      if(startDate.value) {
-        const start = new Date(startDate.value)
-        start.setHours(0, 0, 0, 0)
+        return {
+          ...session,
+          training_records
+        }
+      })
+      .filter(session => {
+        const sessionDate = new Date(session.trainingstart)
 
-        if(sessionDate < start) return false
-      }
+        if (startDate.value) {
+          const start = new Date(startDate.value)
+          start.setHours(0, 0, 0, 0)
 
-      if(endDate.value) {
-        const end = new Date(endDate.value)
-        end.setHours(23, 59, 59, 999)
+          if (sessionDate < start) return false
+        }
 
-        if(sessionDate > end) return false
-      }
+        if (endDate.value) {
+          const end = new Date(endDate.value)
+          end.setHours(23, 59, 59, 999)
 
-      return true
-    })
+          if (sessionDate > end) return false
+        }
+
+        // hide sessions that have no matching records
+        return session.training_records.length > 0
+      })
   })
 
   const pointDistributionHistory = computed(() => {
@@ -336,16 +352,5 @@
 
   onMounted(() => {
     fetchData()
-  })
-
-  watch(selectedTargetType, () => {
-    filteredSessions.value = trainingData.value.map(session => {
-      const filteredTargets = 
-        selectedTargetType.value === "all"
-          ? session.training_records
-          : session.training_records.filter(
-            r => r.target === selectedTargetType.value
-          )
-    })
   })
 </script>
