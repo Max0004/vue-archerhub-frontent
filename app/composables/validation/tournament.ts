@@ -14,7 +14,7 @@ export const tournamentSchema = v.pipe(
 
     tournamentGroup: v.pipe(
       v.number(),
-      v.minValue(1, 'Bitte eine Turniergruppe auswählen.')
+      v.minValue(0, 'Bitte eine Turniergruppe auswählen.')
     ),
 
     place: v.pipe(

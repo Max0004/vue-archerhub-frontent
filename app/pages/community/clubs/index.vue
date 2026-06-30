@@ -1,41 +1,53 @@
 <template>
-  <div class="container grid grid-cols-2 mx-auto p-4">
-    <div>
-      <h1 class="primary-header mb-6 ml-3">Vereine</h1>
-      <div>
-        <div v-for="club in clubs" :key="club.id" class="bg-white m-2 shadow-md rounded-lg p-4 hover:shadow-lg transition">
-          <h2 class="secondary-header">{{ club.name }}</h2>
-          <p class="comment">{{ club.description }}</p>
-          <a
-          :href="club.website"
-          class="text-blue-500 hover:underline mt-2 inline-block"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Besuche Ihre Website
-          </a>
-        </div>
-      </div>
+  <div class="container mx-auto max-w-7xl p-6">
+
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="primary-header">
+        Vereine & Organisationen
+      </h1>
+
+      <UButton
+        icon="i-lucide-plus"
+        @click="router.push('/form/club')"
+      >
+        Neuer Verein
+      </UButton>
     </div>
-    <div class="ml-8">
-      <h1 class="primary-header mb-6 ml-3">Organisationen</h1>
-      <div>
-        <div v-for="organization in organizations" :key="organization.id" class="bg-white m-2 shadow-md rounded-lg p-4 hover:shadow-lg transition">
-          <h2 class="secondary-header">{{ organization.name }}</h2>
-          <p class="comment">{{ organization.description }}</p>
-          <a
-          :href="organization.website"
-          class="text-blue-500 hover:underline mt-2 inline-block"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Besuche Ihre Website
-          </a>
+
+    <div class="grid gap-8 lg:grid-cols-2">
+
+      <section>
+        <h2 class="secondary-header mb-4">Vereine</h2>
+
+        <div class="space-y-4">
+          <ClubCard
+          v-for="club in clubs"
+          :key="club.id"
+          :club="club"
+          />
         </div>
-      </div>
+      </section>
+
+      <section>
+        <h2 class="secondary-header mb-4">Organisationen/Dachvereine</h2>
+
+        <div class="space-y-4">
+          <ClubCard
+          v-for="organization in organizations"
+          :key="organization.id"
+          :club="organization"
+          />
+        </div>
+      </section>
+
     </div>
   </div>
 </template>
 <script setup lang="ts">
   import { ref, computed, onMounted } from 'vue';
+  import { useRouter } from 'vue-router';
+
+  const router = useRouter();
 
   const allClubs = ref([]);
 
