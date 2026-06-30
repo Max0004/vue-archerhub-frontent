@@ -10,7 +10,7 @@
           Archerhub
         </NuxtLink>
         <div>
-          <UNavigationMenu arrow content-orientation="vertical" :items="navigationItems" class="w-full justify-center cursor-pointer" />
+          <UNavigationMenu arrow content-orientation="vertical" :items="navigationItems" color="neutral" class="w-full justify-center cursor-pointer" />
         </div>
       </div>
     </div>
