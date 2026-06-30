@@ -7,6 +7,13 @@
     </div>
     <div v-else-if="!trainingData.length" class="text-center">
       <p class="text-gray-500">Keine Trainingsdaten vorhanden.</p>
+      <UButton
+      icon="i-heroicons-plus"
+      color="primary"
+      @click="showModal = true"
+      >
+        Neuen Eintrag erstellen
+      </UButton>
     </div>
     <div v-else>
       <div class="flex justify-between items-center mb-6">
@@ -114,8 +121,8 @@
           </div>
         </div>
       </div>
-      <TrainingModal v-if="showModal" :show="showModal" @save="submitTrainingData" @close="showModal = false" />
     </div>
+    <TrainingModal v-if="showModal" :show="showModal" @save="submitTrainingData" @close="showModal = false" />
 </template>
 <script setup lang="ts">
   import { useExportTrainingPdf } from '~/composables/pdf/export/exportTrainingPdf'
