@@ -6,99 +6,22 @@
     {{ error }}
   </div>
   <div v-else>
-    <div class="grid grid-cols-3 my-2 gap-2">
-      <button
-      class="w-full border-2 py-2 cursor-pointer"
-      :class="selectedChart === 'totalscore' ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-black border-gray-300'"
-      @click="selectedChart = 'totalscore'"
-      >
-        Gesamtpunktzahl
-      </button>
-      <button
-      class="w-full border-2 py-2 cursor-pointer"
-      :class="selectedChart === 'avghits' ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-black border-gray-300'"
-      @click="selectedChart = 'avghits'"
-      >
-        Trefferquote
-      </button>
-      <button
-      class="w-full border-2 py-2 cursor-pointer"
-      :class="selectedChart === 'avggoldhits' ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-black border-gray-300'"
-      @click="selectedChart = 'avggoldhits'"
-      >
-        Bullseyerate (X, 10, 9)
-      </button>
+    <TournamentHistoryChartSelector />
+
+    <div>
+      <label for="archers-select">Wähle einen/mehrere Schützen:</label><br>
+      <input type="checkbox" id="archers-select-checkbox" v-model="showInactiveArchers">
+      <label for="archers-select-checkbox">Inaktive Schützen anzeigen</label><br>
+
+      <USelectMenu v-model="selectedArcherIds" multiple :items="archerMenuContent" class="w-full h-8" />
     </div>
-    <label for="archers-select">Wähle einen/mehrere Schützen:</label><br>
-    <input type="checkbox" id="archers-select-checkbox" v-model="showInactiveArchers">
-    <label for="archers-select-checkbox">Inaktive Schützen anzeigen</label><br>
-    <select
-    id="archers-select"
-    multiple
-    size="5"
-    v-model="selectedArcherIds"
-    class="w-full h-32 py-2 border-4"
-    >
-      <option 
-      v-for="archer in uniqueArchers" 
-      :key="archer.id" 
-      :value="archer.id"
-      >
-        {{ archer.lastname }} {{ archer.title }} {{ archer.firstname }}
-      </option>
-    </select>
 
-    <TournamentFilter />
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
-
-      <!-- Tournament groups -->
-      <div>
-        <label class="font-bold">Turnierarten</label>
-
-        <select
-        multiple
-        v-model="selectedTournamentGroups"
-        class="w-full h-48 py-2 border-2"
-        >
-          <option
-          v-for="(label, value) in tournamentGroups"
-          :key="value"
-          :value="Number(value)"
-          :disabled="selectedChart == 'avggoldhits' && (value == 66 || value == 67)"
-          >
-            {{ label }}
-          </option>
-        </select>
-      </div>
-
-      <!-- Start date -->
-      <div>
-        <label class="font-bold">Von</label>
-
-        <input
-        v-model="startDate"
-        type="date"
-        class="w-full border-2 p-2"
-        >
-      </div>
-
-      <!-- End date -->
-      <div>
-        <label class="font-bold">Bis</label>
-
-        <input
-        v-model="endDate"
-        type="date"
-        class="w-full border-2 p-2"
-        >
-      </div>
-
-    </div>
+    <TournamentHistoryFilter :tournamentGroups="tournamentGroups" />
 
     <UButton
     v-if="chartComponent && selectedArcherIds.length > 0"
     icon="i-heroicons-arrow-down-tray-20-solid"
+    color="secondary"
     classs="w-full justify-center"
     @click="exportPdf"
     >
@@ -119,17 +42,14 @@
   import { useExportTournamentHistoryPdf } from '~/composables/pdf/export/exportTournamentHistoryPdf';
   import type { ArcherEntry } from '~/models/ArcherEntry'
 
-  const selectedChart = ref('totalscore');
+  const selectedChart = useHistoryChartTypeState();
   const showInactiveArchers = ref(false);
   
   const allArchers = ref<ArcherEntry[]>([])
   const error = ref<string | null>(null)
   const loading = ref(true)
 
-  const selectedTournamentGroups = ref<number[]>([])
-
-  const startDate = ref('')
-  const endDate = ref('')
+  const filterSettings = useHistoryFilterSettingsState()
 
   const chartComponent = ref()
 
@@ -146,6 +66,9 @@
   })
   
   const selectedArcherIds = ref<string[]>([])
+  const archerMenuContent = computed(() => {
+    return uniqueArchers.value.map((entry) => entry.id)
+  })
   
   function archerId(a: ArcherEntry) {
     if(a.title) {
@@ -249,8 +172,8 @@
 
       // Tournament group filter
       if (
-        selectedTournamentGroups.value.length > 0 &&
-        !selectedTournamentGroups.value.includes(entry.tournament_group)
+        filterSettings.value.selectedTournamentGroups.length > 0 &&
+        !filterSettings.value.selectedTournamentGroups.includes(entry.tournament_group)
       ) {
         return false
       }
@@ -258,16 +181,16 @@
       // Date filter
       const tournamentDate = new Date(entry.tournament_date)
 
-      if (startDate.value) {
-        const start = new Date(startDate.value)
+      if (filterSettings.value.startDate) {
+        const start = new Date(filterSettings.value.startDate)
 
         if (tournamentDate < start) {
           return false
         }
       }
 
-      if (endDate.value) {
-        const end = new Date(endDate.value)
+      if (filterSettings.value.endDate) {
+        const end = new Date(filterSettings.value.endDate)
 
         // Include full day
         end.setHours(23, 59, 59, 999)

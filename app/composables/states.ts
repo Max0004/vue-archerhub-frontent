@@ -1,3 +1,5 @@
+export const useHistoryChartTypeState = () => useState('historyChartType', () => ref('totalscore'))
+
 export const useParticipationState = () =>  useState('participation', () => ref({
   tournament: '',
   participant: '',
@@ -14,3 +16,9 @@ export const useParticipationState = () =>  useState('participation', () => ref(
 export const useRoundsState = () => useState('rounds', () => ref([
   { round: 1, target: '', distance: '', arrowsshot: '', score: '' }
 ]))
+
+export const useHistoryFilterSettingsState = () => useState('historyFilterSettings', () => ref({
+  selectedTournamentGroups: [],
+  startDate: '',
+  endDate: ''
+}))
