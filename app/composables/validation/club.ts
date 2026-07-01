@@ -13,6 +13,7 @@ export const clubSchema = v.pipe(
     ),
     description: v.optional(v.string()),
     webURL: v.optional(v.string()),
-    organization: v.boolean()
+    organization: v.boolean(),
+    specialClass: v.boolean()
   })
 )

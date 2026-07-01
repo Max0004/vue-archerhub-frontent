@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   const query = `
     SELECT *
     FROM club
-    ${includeGuest ? '' : 'WHERE id != 997'}
+    ${includeGuest ? '' : 'WHERE specialClass IS FALSE'}
     ORDER BY name;
   `;
   try {

@@ -32,6 +32,10 @@
           <UFormField label="Organisation/Dachverband" name="organization">
             <UCheckbox v-model="form.organization" />
           </UFormField>
+
+          <UFormField label="Sonderklasse" name="specialClass">
+            <UCheckbox v-model="form.specialClass" />
+          </UFormField>
         </div>
         <div class="flex justify-end">
           <UButton type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg transition">
@@ -53,7 +57,8 @@
     tournamentBoardName: '',
     description: '',
     webURL: '',
-    organization: false
+    organization: false,
+    specialClass: false
   })
 
   async function submit(event: FormSubmitEvent<tournamentSchema>) {

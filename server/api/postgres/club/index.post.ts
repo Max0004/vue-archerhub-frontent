@@ -6,13 +6,14 @@ export default defineEventHandler(async (event) => {
 
     const client = await connectToDatabase();
     const res = await client.query(`
-      INSERT INTO club(name,tournamentBoardName,description,website,organization)
-      VALUES($1,$2,$3,$4,$5)`,[
+      INSERT INTO club(name,tournamentBoardName,description,website,organization,specialClass)
+      VALUES($1,$2,$3,$4,$5,$6)`,[
         body.name,
         body.tournamentBoardName,
         body.description,
         body.webURL,
-        body.organization
+        body.organization,
+        body.specialClass
       ])
 
       if(!res.error) return { ...res, statusCode: 200 }

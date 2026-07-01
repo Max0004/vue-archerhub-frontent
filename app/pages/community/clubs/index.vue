@@ -52,11 +52,11 @@
   const allClubs = ref([]);
 
   const clubs = computed(() => {
-    return allClubs.value.filter(club => club.id !== 998 && club.id !== 999)
+    return allClubs.value.filter(club => !club.organization || club.organization == false)
   });
 
   const organizations = computed(() => {
-    return allClubs.value.filter(club => club.id === 998 || club.id === 999)
+    return allClubs.value.filter(club => club.organization == true)
   });
 
   onMounted(async () => {
