@@ -11,7 +11,7 @@
     </div>
 
     <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-      <UForm class="space-y-8" :state="form" @submit="submit">
+      <UForm class="space-y-8" :schema="archerSchema" :state="form" @submit="submit">
 
         <div>
           <h2 class="text-lg font-semibold text-slate-800 mb-4">
@@ -19,19 +19,19 @@
           </h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <UFormField label="Vorname">
+            <UFormField label="Vorname" name="firstname">
               <UInput v-model="form.firstname" />
             </UFormField>
 
-            <UFormField label="Nachname">
+            <UFormField label="Nachname" name="lastname">
               <UInput v-model="form.lastname" />
             </UFormField>
 
-            <UFormField label="Titel">
+            <UFormField label="Titel" name="title">
               <UInput v-model="form.title" />
             </UFormField>
 
-            <UFormField label="Geschlecht">
+            <UFormField label="Geschlecht" name="gender">
               <USelect
               v-model="form.gender"
               :items="[
@@ -42,7 +42,7 @@
               />
             </UFormField>
 
-            <UFormField label="Geburtstag">
+            <UFormField label="Geburtstag" name="birthday">
               <UInput
               v-model="form.birthday"
               type="date"
@@ -57,11 +57,11 @@
           </h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <UFormField label="Aktiv">
+            <UFormField label="Aktiv" name="active">
               <UCheckbox v-model="form.active" />
             </UFormField>
 
-            <UFormField label="Vereine">
+            <UFormField label="Vereine" name="clubIds">
               <USelectMenu
               class="w-full"
               v-model="form.clubIds"
@@ -83,6 +83,8 @@
   </div>
 </template>
 <script setup lang="ts">
+  import { archerSchema } from '~/composables/validation/archer'
+
   const clubs = ref([])
 
   const toast = useToast()
@@ -92,7 +94,7 @@
     lastname: '',
     title: '',
     gender: 'MALE',
-    birthday: null,
+    birthday: '',
     active: true,
     clubIds: []
   })
