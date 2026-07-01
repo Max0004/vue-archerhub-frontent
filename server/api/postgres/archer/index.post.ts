@@ -19,8 +19,9 @@ export default defineEventHandler(async (event) => {
 
     if(body.clubIds && body.clubIds.length > 0) {
       const clubIds = Array.of(body.clubIds).flat()
+      
       clubIds.forEach(async club => {
-        await client.query(`INSERT INTO userclub(userid,clubid) VALUES($1,$2)`,[res.rows[0]?.id,club.id])
+        await client.query(`INSERT INTO userclub(userid,clubid) VALUES($1,$2)`,[res.rows[0]?.id,club])
       })
     }
 

@@ -1,8 +1,8 @@
 export function convertGender(genderString: string) {
   switch(genderString) {
-    case "Male":
+    case "MALE":
       return "Männlich"
-    case "Female":
+    case "FEMALE":
       return "Weiblich"
     default:
       return "Divers"

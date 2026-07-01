@@ -76,7 +76,7 @@ export default defineEventHandler(async (event) => {
           )
         ) as medals
       FROM "user" u 
-      INNER JOIN tournamentparticipation tp ON tp.participant = u.id
+      LEFT JOIN tournamentparticipation tp ON tp.participant = u.id
       WHERE u.id = $1
       GROUP BY u.id;  
     `,[id]);

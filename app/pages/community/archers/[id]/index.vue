@@ -3,6 +3,11 @@
     <div v-if="loading">
       ...loading
     </div>
+
+    <div v-else-if="!userData">
+      Nutzer konte nicht gefunden werden
+    </div>
+
     <div v-else class="max-w-4xl mx-auto">
 
       <!-- Header Card -->
@@ -37,7 +42,7 @@
         </div>
 
         <div v-else class="mb-6 bg-linear-to-r from-red-500 to-red-300 rounded-lg p-4 border border-indigo-200">
-          <h3 class="font-semibold text-gray-900 mb-1">{{ userData?.gender == "Female" ? "Diese Nutzerin" : "Dieser Nutzer" }} ist nicht mehr aktiv</h3>
+          <h3 class="font-semibold text-gray-900 mb-1">{{ userData?.gender == "FEMALE" ? "Diese Nutzerin" : "Dieser Nutzer" }} ist nicht mehr aktiv</h3>
         </div>
 
         <!-- Medal Board -->
@@ -92,7 +97,9 @@
       const response = await $fetch(`/api/postgres/archer/${archerId}`, {
         method: "GET"
       })
-      userData.value = response
+      if(response.id) {
+        userData.value = response
+      }
     } catch(error) {
       console.error(error);
     } finally {
