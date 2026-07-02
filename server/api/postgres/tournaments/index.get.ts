@@ -7,9 +7,21 @@ export default defineEventHandler(async (event) => {
     const res = await client.query(`
       SELECT 
         t.*, 
-        c.name as organizer
+        (
+          SELECT json_agg(
+            json_build_object(
+              'id', c.id,
+              'name', c.name
+            )
+          )
+          FROM tournamentClubs tc
+          JOIN club c ON tc.club = c.id
+          WHERE tc.tournament = t.id
+        ) as organizers
       FROM tournament t 
-      INNER JOIN club c ON t.organizedby = c.id
+      INNER JOIN tournamentClubs tc ON tc.tournament = t.id
+      INNER JOIN club c ON tc.club = c.id
+      GROUP BY t.id
       ORDER BY "from" DESC;`);
       
       if(res.rows.length === 0) {

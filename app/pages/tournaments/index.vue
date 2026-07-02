@@ -69,7 +69,7 @@
             <div class="grid grid-cols-1 gap-2 text-sm text-slate-600">
               <div class="flex items-center gap-2">
                 <Award size="16" />
-                <span>Organisiert durch: {{ t.organizer }}</span>
+                <span>Organisiert durch: <span v-for="(organizer,index) in t.organizers" :key="organizer.id">{{ organizer.name }}{{ index < t.organizers.length - 1 ? ', ' : '' }}</span></span>
               </div>
 
               <div class="flex items-center gap-2">

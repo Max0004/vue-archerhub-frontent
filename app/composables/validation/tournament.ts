@@ -8,8 +8,7 @@ export const tournamentSchema = v.pipe(
     ),
 
     organizedBy: v.pipe(
-      v.number(),
-      v.minValue(1, 'Bitte einen Veranstalter auswählen.')
+      v.array(v.number())
     ),
 
     tournamentGroup: v.pipe(

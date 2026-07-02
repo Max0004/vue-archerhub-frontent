@@ -30,7 +30,7 @@
             </UFormField>
 
             <UFormField label="Veranstalter" name="organizedBy" required>
-              <USelect v-model="tournament.organizedBy" :items="clubs" class="w-full border border-slate-300" />
+              <USelectMenu v-model="tournament.organizedBy" :items="clubs" multiple value-key="id" class="w-full border border-slate-300" />
             </UFormField>
 
             <UFormField label="Turniergruppe" name="tournamentGroup" required>
@@ -51,11 +51,11 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <UFormField label="Begin" name="from" required>
-              <UInputDate v-model="tournament.from" :default-value="defaultStartDate" />
+              <UInputDate v-model="tournament.from" locale="de-DE" :default-value="defaultStartDate" />
             </UFormField>
 
             <UFormField label="Ende" name="until">
-              <UInputDate v-model="tournament.until" />
+              <UInputDate v-model="tournament.until" locale="de-DE" />
             </UFormField>
           </div>
         </div>
@@ -115,7 +115,7 @@ import { format } from 'date-fns'
 import { tournamentSchema } from '~/composables/validation/tournament'
   const tournament = ref<tournamentSchema>({
     name: '',
-    organizedBy: 999,
+    organizedBy: [],
     from: '',
     until: undefined,
     tournamentGroup: 0,
@@ -166,7 +166,7 @@ import { tournamentSchema } from '~/composables/validation/tournament'
     })
     clubs.value = response.map((club: any) => ({
       label: club.name,
-      value: club.id
+      id: club.id
     }))
   }
 

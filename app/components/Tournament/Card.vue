@@ -10,7 +10,7 @@
   
       <div class="flex items-center gap-2 mb-2">
         <Users class="w-4 h-4 text-orange-500" />
-        <span class="comment">{{ tournament.organizer_name }}</span>
+        <span v-for="(organizer,index) in tournament.organizers" :key="organizer.id" class="comment">{{ organizer.name }}{{ index < tournament.organizers.length - 1 ? ', ' : '' }}</span>
       </div>
 
       <div class="flex items-center gap-2 mb-2">

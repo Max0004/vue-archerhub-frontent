@@ -7,7 +7,7 @@
           <h2 class="primary-header mb-2">{{ tournament.tournament_name }}</h2>
           <p class="comment">Datum: {{ formattedDate }}</p>
           <p class="comment">Ort: {{ tournament.place }}</p>
-          <p class="comment">Organisiert durch: {{ tournament.organizer_name }}</p>
+          <p class="comment">Organisiert durch: <span v-for="(organizer,index) in tournament.organizers" :key="organizer.id" class="comment">{{ organizer.name }}{{ index < tournament.organizers.length - 1 ? ', ' : '' }}</span></p>
         </div>
         <button 
         v-if="processedBrackets.length"

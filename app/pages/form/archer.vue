@@ -93,7 +93,7 @@
     firstname: '',
     lastname: '',
     title: '',
-    gender: 'MALE',
+    gender: '',
     birthday: '',
     active: true,
     clubIds: []

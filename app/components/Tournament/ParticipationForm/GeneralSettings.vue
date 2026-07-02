@@ -6,30 +6,28 @@
 
       <!-- Tournament -->
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-2">Turnier *</label>
-        <select
-          :value="participation.tournament"
+        <UFormField label="Turnier">
+          <USelectMenu
+          v-model="participation.tournament"
+          :items="tournamentList"
+          value-key="id"
           @change="update('tournament', $event.target.value)"
           class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Turnier Auswählen...</option>
-          <option v-for="t in tournaments" :key="t.id" :value="t.id">{{ t.name }}</option>
-        </select>
+          />
+        </UFormField>
       </div>
 
       <!-- Participant -->
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-2">Schütze *</label>
-        <select
-          :value="participation.participant"
+        <UFormField label="Schütze">
+          <USelectMenu 
+          v-model="participation.participant" 
+          :items="participantsList" 
+          value-key="id" 
           @change="update('participant', $event.target.value)"
-          class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Schützen Auswählen...</option>
-          <option v-for="p in participants" :key="p.id" :value="p.id">
-            {{ p.lastname }} {{ p.title }} {{ p.firstname }}
-          </option>
-        </select>
+          class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500" 
+          />
+        </UFormField>
       </div>
 
       <!-- Club -->
@@ -145,6 +143,20 @@
     clubs: Array,
     ageBrackets: Array,
     bowClasses: Array
+  })
+
+  const tournamentList = computed(() => {
+    return props.tournaments.map(tournament => ({
+      label: tournament.name,
+      id: tournament.id
+    }))
+  })
+
+  const participantsList = computed(() => {
+    return props.participants.map(participant => ({
+      label: `${participant.lastname} ${participant.title? participant.title + ' ' : ''}${participant.firstname}`,
+      id: participant.id
+    }))
   })
 
   const update = (field, value) => {

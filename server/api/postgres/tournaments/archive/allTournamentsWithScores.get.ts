@@ -5,7 +5,17 @@ export default defineEventHandler(async () => {
     SELECT 
       t.id AS tournament_id,
       t.name AS tournament_name,
-      c.name AS organizer_name,
+      (
+        select json_agg(
+          json_build_object(
+            'id', c.id,
+            'name', c.name
+          )
+        )
+        from tournamentclubs tc
+        join club c on tc.club = c.id
+        where tc.tournament = t.id
+      ) as organizers,
       t."from" AS startdate,
       t."until" AS enddate,
       t.place,
@@ -77,15 +87,15 @@ export default defineEventHandler(async () => {
         , '[]'
       ) AS ageBrackets
     FROM tournament t
-    JOIN club c ON t.organizedBy = c.id
     LEFT JOIN ageBracket ab
-      ON ab.id IN (
-        SELECT DISTINCT ageBracket
+      ON EXISTS (
+        SELECT 1
         FROM tournamentParticipation tp2
         WHERE tp2.tournament = t.id
+          AND tp2.ageBracket = ab.id
       )
     GROUP BY 
-      t.id, t.name, c.name, t."from", t."until", t.place,
+      t.id, t.name, t."from", t."until", t.place,
       t.centersCounted, t.ninesCounted, t.titlebywinning, t.earnmedalinabsence
     ORDER BY t."from" DESC;
   `

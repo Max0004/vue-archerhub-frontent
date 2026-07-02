@@ -261,28 +261,28 @@
       if(!age) {
         groups["k.A."].push(archer);
       } else if (age <= 10) {
-        if (gender === 'Male') groups["Schüler C männl."].push(archer);
+        if (gender === 'MALE') groups["Schüler C männl."].push(archer);
         else groups["Schüler C weibl."].push(archer);
       } else if (age >= 11 && age <= 12) {
-        if (gender === 'Male') groups["Schüler B männl."].push(archer);
+        if (gender === 'MALE') groups["Schüler B männl."].push(archer);
         else groups["Schüler B weibl."].push(archer);
       } else if (age >= 13 && age <= 14) {
-        if (gender === 'Male') groups["Schüler A männl."].push(archer);
+        if (gender === 'MALE') groups["Schüler A männl."].push(archer);
         else groups["Schüler A weibl."].push(archer);
       } else if (age >= 15 && age <= 17) {
-        if (gender === 'Male') groups["Jugend männl."].push(archer);
+        if (gender === 'MALE') groups["Jugend männl."].push(archer);
         else groups["Jugend weibl."].push(archer);
       } else if (age >= 18 && age <= 20) {
-        if (gender === 'Male') groups["Junior männl."].push(archer);
+        if (gender === 'MALE') groups["Junior männl."].push(archer);
         else groups["Junior weibl."].push(archer);
       } else if (age >= 21 && age <= 49) {
-        if (gender === 'Male') groups["Herren"].push(archer);
+        if (gender === 'MALE') groups["Herren"].push(archer);
         else groups["Damen"].push(archer);
       } else if (age >= 50 && age <= 65) {
-        if (gender === 'Male') groups["Masters Herren"].push(archer);
+        if (gender === 'MALE') groups["Masters Herren"].push(archer);
         else groups["Masters Damen"].push(archer);
       } else if (age >= 66) {
-        if (gender === 'Male') groups["Senioren"].push(archer);
+        if (gender === 'MALE') groups["Senioren"].push(archer);
         else groups["Seniorinnen"].push(archer);
       }
     });

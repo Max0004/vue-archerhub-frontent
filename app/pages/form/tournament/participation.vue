@@ -99,7 +99,7 @@
   )
 
   const isStep2Valid = computed(() => 
-    rounds.value.every(r => r.target && r.distance && r.arrowsshot && r.score)
+    rounds.value.every(r => r.target && r.score)
   )
 
   const isEmpty = (v) => v === '' || v == null; // null or undefined
