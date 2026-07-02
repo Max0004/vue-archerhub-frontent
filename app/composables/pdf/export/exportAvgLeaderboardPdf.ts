@@ -59,7 +59,7 @@ export async function useExportLeaderboardPdf(options: {
 function getSubHeader(leaderboardType: number): string {
   switch(leaderboardType) {
     case 3:
-      return "Die folgenden Medallien wurden während Turnieren des RSB, DSB und SFT inklusive Teamwertungen in der laufenden Seison erziehlt"
+      return "<<PLACEHOLDER>>"
     default:
       return ""
   }
