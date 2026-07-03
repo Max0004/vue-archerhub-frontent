@@ -120,7 +120,7 @@
 
   const getTitlePronounciation = (title) => {
     switch(props.gender) {
-      case "Female":
+      case "FEMALE":
         return title+"in"
       default:
         return title
