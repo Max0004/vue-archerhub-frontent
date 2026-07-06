@@ -3,7 +3,7 @@
     <!-- By Point Average -->
     <section>
       <div class="bg-white p-2 rounded-xl">
-        <h2 class="text-2xl font-semibold mb-4">🏅 Schützen nach höchstem Ringdurchschnitt (Saison {{ currentYear }})</h2>
+        <h2 class="text-2xl font-semibold mb-4">🏅 Schützen nach höchstem Ringdurchschnitt (Seison {{ currentYear }})</h2>
         <div v-if="!topTenByPoints.length" class="bg-white shadow rounded-xl p-6">
           <p>Es gibt momentan noch keine Ergebnisse für dieses Jahr</p>
         </div>
@@ -52,7 +52,7 @@
       <button
       v-if="topTenByPoints.length > 0"
       class="primary-btn"
-      @click="downloadLeaderboard(topTenByPoints, `Schützen nach höchstem Ringdurchschnitt (Saison ${currentYear})`, 1)"
+      @click="downloadLeaderboard(topTenByPoints, `Schützen nach höchstem Ringdurchschnitt (Seison ${currentYear})`, 1)"
       >
         Download Tabelle
       </button>
@@ -108,7 +108,7 @@
     <section>
       <div class="bg-white p-2 rounded-xl">
         <h2 class="text-2xl font-semibold mb-4">
-    🥇    Medaillenspiegel (Saison {{ currentYear }})
+    🥇    Medaillenspiegel (Seison {{ currentYear }})
         </h2>
         <div v-if="!topTenMedalists.length" class="bg-white shadow rounded-xl p-6">
           <p>Es gibt momentan noch keine Ergebnisse für dieses Jahr</p>
