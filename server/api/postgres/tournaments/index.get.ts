@@ -6,7 +6,17 @@ export default defineEventHandler(async (event) => {
     const client = await connectToDatabase();
     const res = await client.query(`
       SELECT 
-        t.*, 
+        t.id,
+        t.name as tournament_name,
+        t.from as startdate,
+        t.until as enddate,
+        t.tournamentgroup,
+        t.place,
+        t.centerscounted,
+        t.ninescounted,
+        t.titlebywinning,
+        t.earnmedalinabsence,
+        t.goldcounted,
         (
           SELECT json_agg(
             json_build_object(
