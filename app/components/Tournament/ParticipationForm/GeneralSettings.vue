@@ -95,7 +95,7 @@
 
       <!-- Total Centers -->
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+        <label class="block text-sm font-semibold text-slate-700 mb-2 items-center gap-2">
           X-er
         </label>
         <input
@@ -109,7 +109,7 @@
 
       <!-- Total Nines -->
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+        <label class="block text-sm font-semibold text-slate-700 mb-2 items-center gap-2">
           9er
         </label>
         <input
@@ -123,7 +123,7 @@
 
       <!-- Data in Absence -->
       <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+        <label class="block text-sm font-semibold text-slate-700 mb-2 items-center gap-2">
           Abwesend (n.z.Q.)
         </label>
         <input
@@ -147,7 +147,7 @@
 
   const tournamentList = computed(() => {
     return props.tournaments.map(tournament => ({
-      label: tournament.name,
+      label: tournament.tournament_name,
       id: tournament.id
     }))
   })
