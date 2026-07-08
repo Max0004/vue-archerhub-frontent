@@ -136,13 +136,13 @@
   const organizers = computed(() => {
     const uniqueOrganizers = [
       ...new Set(
-        tournaments.value
-          .map(t => t.organizer_name)
-          .filter(Boolean)
+        tournaments.value.flatMap(t =>
+          t.organizers?.map(organizer => organizer.name) ?? []
+        )
       )
     ]
 
-    return [...uniqueOrganizers.sort()]
+    return uniqueOrganizers.sort()
   })
 
   const filteredTournaments = computed(() => {
@@ -153,7 +153,7 @@
         (selectedSeason.value === 'Alle Saisons' ||
           tournamentSeason === selectedSeason.value) &&
         (selectedOrganizer.value === 'Alle Veranstalter' ||
-          t.organizer_name === selectedOrganizer.value)
+          t.organizers?.some(organizer => organizer.name === selectedOrganizer.value))
       )
     })
   })
