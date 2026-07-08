@@ -51,9 +51,9 @@
                 <th>Teilnehmer</th>
                 <th>Verein</th>
                 <th v-for="round in bracket.maxRounds" :key="round" class="text-right">R{{ round }}</th>
-                <th v-if="tournament.centerscounted" class="text-right">X</th>
-                <th class="text-right">10</th>
-                <th v-if="tournament.ninescounted" class="text-right">9</th>
+                <th v-if="tournament.goldcounted && tournament.centerscounted" class="text-right">X</th>
+                <th v-if="tournament.goldcounted" class="text-right">10</th>
+                <th v-if="tournament.goldcounted && tournament.ninescounted" class="text-right">9</th>
                 <th class="text-right">Ges.</th>
               </tr>
 
@@ -81,15 +81,15 @@
                 >
                   {{ getRoundScore(participant, roundIndex) }}
                 </td>
-                <td v-if="tournament.centerscounted" class="text-right">
+                <td v-if="tournament.goldcounted && tournament.centerscounted" class="text-right">
                   <span v-if="participant.absent && !tournament.earnmedalinabsence">-</span>
                   <span v-else>{{ participant.totalCenters }}</span>
                 </td>
-                <td class="text-right">
+                <td v-if="tournament.goldcounted" class="text-right">
                   <span v-if="participant.absent && !tournament.earnmedalinabsence">-</span>
                   <span v-else>{{ participant.totalTens }}</span>
                 </td>
-                <td v-if="tournament.ninescounted" class="text-right">
+                <td v-if="tournament.goldcounted && tournament.ninescounted" class="text-right">
                   <span v-if="participant.absent && !tournament.earnmedalinabsence">-</span>
                   <span v-else>{{ participant.totalNines }}</span>
                 </td>

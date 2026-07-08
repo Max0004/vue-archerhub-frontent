@@ -164,9 +164,9 @@ export async function useExportTournamentResultsPdf(options: {
   
     const headers = ["Pl.", "Name", "Verein"]
     for (let r = 1; r <= bracket.maxRounds; r++) headers.push(`R${r}`)
-    if (tournament.centerscounted) headers.push("X")
-    headers.push("10")
-    if (tournament.ninescounted) headers.push("9")
+    if (tournament.goldcounted && tournament.centerscounted) headers.push("X")
+    if (tournament.goldcounted) headers.push("10")
+    if (tournament.goldcounted && tournament.ninescounted) headers.push("9")
     headers.push("Ges.")
   
     // ---------- COLUMN WIDTHS ----------
@@ -179,9 +179,9 @@ export async function useExportTournamentResultsPdf(options: {
   
     const dynamicColumnCount =
       bracket.maxRounds +
-      (tournament.centerscounted ? 1 : 0) +
-        1 + // 10s
-      (tournament.ninescounted ? 1 : 0)
+      (tournament.goldcounted && tournament.centerscounted ? 1 : 0) +
+      (tournament.goldcounted ? 1 : 0) +
+      (tournament.goldcounted && tournament.ninescounted ? 1 : 0)
 
     const { dynamicWidth } = calculateBracketColumnWidths(
       tableWidth,
@@ -233,9 +233,9 @@ export async function useExportTournamentResultsPdf(options: {
           const s = p.scores?.find(r => r.round === i + 1)
           return s?.score ?? ""
         }),
-        ...(tournament.centerscounted ? [p.absent ? "-" : p.totalCenters] : []),
-        p.absent || !p.totalTens ? "-" : p.totalTens,
-        ...(tournament.ninescounted ? [p.absent ? "-" : p.totalNines] : []),
+        ...(tournament.goldcounted && tournament.centerscounted ? [p.absent ? "-" : p.totalCenters] : []),
+        ...(tournament.goldcounted ? [p.absent ? "-" : p.totalTens] : []),
+        ...(tournament.goldcounted && tournament.ninescounted ? [p.absent ? "-" : p.totalNines] : []),
         p.totalScore
       ]
   

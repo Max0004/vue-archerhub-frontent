@@ -23,6 +23,7 @@ export default defineEventHandler(async () => {
       t.ninesCounted,
       t.titlebywinning,
       t.earnmedalinabsence,
+      t.goldcounted,
       COALESCE(
         json_agg(
           json_build_object(
@@ -96,7 +97,7 @@ export default defineEventHandler(async () => {
       )
     GROUP BY 
       t.id, t.name, t."from", t."until", t.place,
-      t.centersCounted, t.ninesCounted, t.titlebywinning, t.earnmedalinabsence
+      t.centersCounted, t.ninesCounted, t.titlebywinning, t.earnmedalinabsence, t.goldcounted
     ORDER BY t."from" DESC;
   `
 
